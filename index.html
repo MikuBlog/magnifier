@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        html,
+        body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            overflow: hidden;
+            background:linear-gradient(#fed6e3,#a8edea);
+        }
+
+        #contain {
+            position: relative;
+            width: 960px;
+            height: 540px;
+            margin: auto;
+            margin-top: -270px;
+            top: 50%;
+        }
+
+        #large {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border:5px double white;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            display: none;
+            z-index: 1;
+        }
+
+        #small {
+            width: 100%;
+            height: 100%;
+            filter: blur(5px);
+        }
+
+        #son {
+            height: 100%;
+            height: 100%;
+        }
+    </style>
+	
+<script>
+    window.addEventListener('load', function () {
+        let large = document.querySelector("#large");
+        let small = document.querySelector("#small");
+        let contain = document.querySelector("#contain");
+        let img = new Image();
+        let top = 0, left = 0;
+        let width = parseInt(window.getComputedStyle(small).width.substring(0, 3));
+        let height = parseInt(window.getComputedStyle(small).height.substring(0, 3));
+		img.src = "source/壁纸1.jpg";
+        large.appendChild(img);
+        contain.addEventListener('mousemove', function (e) {
+            if (e.pageX > contain.offsetLeft && e.pageY > contain.offsetTop && e.pageX < (contain.offsetLeft + width) && e.pageY < (contain.offsetTop + height)) {
+                top = e.pageY - contain.offsetTop -150;
+                left = e.pageX - contain.offsetLeft - 150;
+                large.style.display = "block";
+                large.style.top = top + "px";
+                large.style.left = left + "px";
+                img.style.marginTop = -img.height*(top+150)/height+150+"px";
+                img.style.marginLeft = -img.width*(left+150)/width+150+"px";
+            }else{
+                large.style.display = "none";
+            }
+        })
+    })
+</script>
+	
+</head>
+
+<body>
+    <div id="contain">
+        <div id="large"></div>
+        <div id="small">
+            <img src="source/壁纸1.jpg" id="son">
+        </div>
+    </div>
+</body>
+
+
+</html>
