@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>初音放大镜</title>
     <style>
         html,
         body {
@@ -18,10 +18,10 @@
 
         #contain {
             position: relative;
-            width: 960px;
-            height: 540px;
+            width: 1169px;
+            height: 827px;
             margin: auto;
-            margin-top: -270px;
+            margin-top: -413.5px;
             top: 50%;
         }
 
@@ -48,6 +48,58 @@
             height: 100%;
             height: 100%;
         }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            left: 0;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+        }
+
+        .select {
+            position: absolute;
+            width: 70px;
+            height: 123px;
+            right: 80px;
+            top: 30px;
+        }
+
+        .circle {
+            height: 123px;
+            width: 123px;
+            overflow: hidden;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.26);
+        }
+
+        .select > .img-select {
+            position: absolute;
+            top: 0;
+            right:0;
+            left: 0;
+            bottom: 0;
+            z-index: 1;
+            opacity: 0;
+        }
+
+        .circle > .image {
+            margin-left: 30px;
+            width: auto;
+            height: 100%;
+            animation: rotate 10s both infinite linear;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg)
+            }100% {
+                transform: rotate(360deg)
+            }
+        }
+
     </style>
 	
 <script>
@@ -55,15 +107,43 @@
         let large = document.querySelector("#large");
         let small = document.querySelector("#small");
         let contain = document.querySelector("#contain");
+        let son = document.querySelector('#son');
         let img = new Image();
         let top = 0, left = 0;
-        let width = parseInt(window.getComputedStyle(small).width.substring(0, 3));
-        let height = parseInt(window.getComputedStyle(small).height.substring(0, 3));
-		img.src = "source/壁纸1.jpg";
+        let width = parseInt(window.getComputedStyle(small).width);
+        let height = parseInt(window.getComputedStyle(small).height);
+        let imgSelect = document.querySelector('.img-select');
+        let image = document.querySelector('.image');
+        let fileReader = new FileReader();
+        let multiple;
+        img.src = "https://mikuimg.oss-cn-shenzhen.aliyuncs.com/magnifier/66001476_p0.jpg";
+        imgSelect.addEventListener('change', function(event) {
+            let file = event.currentTarget.files[0]
+            fileReader.readAsDataURL(file)
+        })
+        fileReader.addEventListener('load', function(file) {
+            var imaged = new Image()
+            imaged.src = file.target.result
+            imaged.addEventListener('load', function() {
+                if(this.width >= 1920 || this.height >= 1080) {
+                    multiple = 2.3
+                }else if(this.width >= 1240 || this.height >= 786) {
+                    multiple = 2
+                }else {
+                    multiple = 1.7
+                }
+                contain.style.width = this.width/multiple + "px"
+                contain.style.height = this.height/multiple + "px"
+                contain.style.marginTop = -this.height/(multiple * 2) + "px"
+                img.src = son.src = file.target.result
+                height = this.height / multiple
+                width = this.width / multiple
+            })
+        })
         large.appendChild(img);
         contain.addEventListener('mousemove', function (e) {
             if (e.pageX > contain.offsetLeft && e.pageY > contain.offsetTop && e.pageX < (contain.offsetLeft + width) && e.pageY < (contain.offsetTop + height)) {
-                top = e.pageY - contain.offsetTop -150;
+                top = e.pageY - contain.offsetTop - 150;
                 left = e.pageX - contain.offsetLeft - 150;
                 large.style.display = "block";
                 large.style.top = top + "px";
@@ -74,19 +154,33 @@
                 large.style.display = "none";
             }
         })
+        imgSelect.addEventListener('mouseover', function() {
+            image.style.animationPlayState = "paused"
+            this.addEventListener('mouseout', function() {
+                image.style.animationPlayState = "running"
+            })
+        })
     })
 </script>
 	
 </head>
 
 <body>
+    <div class="select">
+        <input type="file" class="img-select">
+        <div class="circle">
+            <img src="https://mikuimg.oss-cn-shenzhen.aliyuncs.com/magnifier/head.png" alt="请选择图片" class="image">
+        </div>
+    </div>
     <div id="contain">
         <div id="large"></div>
         <div id="small">
-            <img src="source/壁纸1.jpg" id="son">
+            <img src="https://mikuimg.oss-cn-shenzhen.aliyuncs.com/magnifier/66001476_p0.jpg" id="son">
         </div>
     </div>
+    <div class="footer">
+        <a href="http://http://www.miitbeian.gov.cn/">粤ICP备19008964号</a>
+    </div>
 </body>
-
 
 </html>
