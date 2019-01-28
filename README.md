@@ -6,7 +6,7 @@
 
 <br/>
 
->demo示例：http://magnifier.mikublog.xyz
+>demo示例：http://magnifier.xuanzai.top
 
 <br/>
 
